@@ -1,6 +1,6 @@
 //context api consist of 3 parts
 
-import { createContext, useState } from "react";
+import { createContext, useState, useContext } from "react";
 import { faker } from "@faker-js/faker";
 
 function createRandomPost() {
@@ -49,4 +49,13 @@ function PostProvider({ children }) {
     </PostContext.Provider>
   );
 }
-export { PostProvider, PostContext };
+//creating a custom hook to replace everywhere useContext(PostContext) by usePosts()
+//consist of two parts: 1. PostProvider 2.custom hook
+function usePosts() {
+  //getting the values
+  const context = useContext(PostContext);
+  if (context === undefined)
+    throw new Error("PostContext was used outside of the PostProvider");
+  return context;
+}
+export { PostProvider, usePosts };
